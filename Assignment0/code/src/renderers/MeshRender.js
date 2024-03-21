@@ -117,38 +117,38 @@ class MeshRender {
 		gl.useProgram(this.shader.program.glShaderProgram);
 
 		gl.uniformMatrix4fv(
-			this.shader.program.uniforms.uProjectionMatrix,
+			this.shader.program.uniforms["uProjectionMatrix"],
 			false,
 			projectionMatrix);
 		gl.uniformMatrix4fv(
-			this.shader.program.uniforms.uModelViewMatrix,
+			this.shader.program.uniforms["uModelViewMatrix"],
 			false,
 			modelViewMatrix);
 
 		// Specific the camera uniforms
 		gl.uniform3fv(
-			this.shader.program.uniforms.uCameraPos,
+			this.shader.program.uniforms["uCameraPos"],
 			[camera.position.x, camera.position.y, camera.position.z]);
 
 		for (let k in this.material.uniforms) {
-			if (this.material.uniforms[k].type == 'matrix4fv') {
+			if (this.material.uniforms[k].type === 'matrix4fv') {
 				gl.uniformMatrix4fv(
 					this.shader.program.uniforms[k],
 					false,
 					this.material.uniforms[k].value);
-			} else if (this.material.uniforms[k].type == '3fv') {
+			} else if (this.material.uniforms[k].type === '3fv') {
 				gl.uniform3fv(
 					this.shader.program.uniforms[k],
 					this.material.uniforms[k].value);
-			} else if (this.material.uniforms[k].type == '1f') {
+			} else if (this.material.uniforms[k].type === '1f') {
 				gl.uniform1f(
 					this.shader.program.uniforms[k],
 					this.material.uniforms[k].value);
-			} else if (this.material.uniforms[k].type == '1i') {
+			} else if (this.material.uniforms[k].type === '1i') {
 				gl.uniform1i(
 					this.shader.program.uniforms[k],
 					this.material.uniforms[k].value);
-			} else if (this.material.uniforms[k].type == 'texture') {
+			} else if (this.material.uniforms[k].type === 'texture') {
 				gl.activeTexture(gl.TEXTURE0);
 				gl.bindTexture(gl.TEXTURE_2D, this.material.uniforms[k].value.texture);
 				gl.uniform1i(this.shader.program.uniforms[k], 0);
@@ -156,6 +156,7 @@ class MeshRender {
 		}
 
 		{
+			// opengl开始作画..
 			const vertexCount = this.mesh.count;
 			const type = gl.UNSIGNED_SHORT;
 			const offset = 0;

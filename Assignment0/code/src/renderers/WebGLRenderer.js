@@ -48,7 +48,7 @@ class WebGLRenderer {
                     let meshTrans = new TRSTransform(modelTranslation, modelScale);
                     
                     this.gl.useProgram(mesh.shader.program.glShaderProgram);
-                    this.gl.uniform3fv(mesh.shader.program.uniforms.uLightPos, lightPos);
+                    this.gl.uniform3fv(mesh.shader.program.uniforms['uLightPos'], lightPos);
                     mesh.draw(this.camera, meshTrans);
                 }
             }

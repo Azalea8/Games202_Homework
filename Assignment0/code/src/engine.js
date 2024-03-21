@@ -42,7 +42,12 @@ function GAMES202Main() {
 	// 设置相机的位置
 	camera.position.set(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
 
-	cameraControls.target.set(0, 1, 0); // 这是轨道控制器的目标位置属性。它表示相机的焦点位置，也就是相机在场景中围绕旋转的中心点。
+	// 这是轨道控制器的目标位置属性。它表示相机的焦点位置，也就是相机在场景中围绕旋转的中心点。
+	cameraControls.target.set(0, 1, 0);
+
+	/*
+		从这里开始，代码变得复杂
+	*/
 
 	const pointLight = new PointLight(250, [1, 1, 1]);
 
