@@ -49,10 +49,13 @@ function GAMES202Main() {
 		从这里开始，代码变得复杂
 	*/
 
+	// 实例化一个点光源
 	const pointLight = new PointLight(250, [1, 1, 1]);
 
 	const renderer = new WebGLRenderer(gl, camera);
 	renderer.addLight(pointLight);
+
+	// 加载模型文件
 	loadOBJ(renderer, 'assets/mary/', 'Marry');
 
 	var guiParams = {

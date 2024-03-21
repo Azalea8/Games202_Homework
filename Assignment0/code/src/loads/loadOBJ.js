@@ -37,6 +37,10 @@ function loadOBJ(renderer, path, name) {
 					object.traverse(function (child) {
 						// 检查子元素是否为网格。
 						if (child.isMesh) {
+							// 这里模型有两个 Mesh
+							// 一次对应模型主体；
+							// 一次为裙摆的 '202' 字体
+
 							// 获取子网格的几何体（geometry）
 							let geo = child.geometry;
 
@@ -76,11 +80,16 @@ function loadOBJ(renderer, path, name) {
 								},[],VertexShader, FragmentShader);
 							}*/
 
+							// 此处的 mat.color是指材质的基本颜色，Marry.mtl有两个材质，其中的 Kd即为这里的颜色
 							let myMaterial = new PhongMaterial(mat.color.toArray(), colorMap , mat.specular.toArray(),
-								renderer.lights[0].entity.mat. intensity);
+								renderer.lights[0].entity.mat.intensity);
 
 							let meshRender = new MeshRender(renderer.gl, mesh, myMaterial);
+
+							// 模型加载完后，renderer的 meshes元素数量应该为 2
 							renderer.addMesh(meshRender);
+
+							// console.log("Meshes: " + renderer.meshes.length);
 						}
 					});
 				}, onProgress, onError);

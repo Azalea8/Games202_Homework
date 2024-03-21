@@ -11,11 +11,13 @@ class MeshRender {
 		this.mesh = mesh;
 		this.material = material;
 
+		// 创建相关缓冲
 		this.#vertexBuffer = gl.createBuffer();
 		this.#normalBuffer = gl.createBuffer();
 		this.#texcoordBuffer = gl.createBuffer();
 		this.#indicesBuffer = gl.createBuffer();
 
+		// 检查是否有需要向 GPU传值的属性
 		let extraAttribs = []
 		if (mesh.hasVertices) {
 			extraAttribs.push(mesh.verticesName);
@@ -42,7 +44,10 @@ class MeshRender {
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(mesh.indices), gl.STATIC_DRAW);
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
+		// 调用 setMeshAttribs方法将需要向 GPU传值的属性加入到 #flatten_attribs中，后续构造我们的 shader程序;
 		this.material.setMeshAttribs(extraAttribs);
+
+		// 编译并链接 shader程序
 		this.shader = this.material.compile(gl);
 	}
 

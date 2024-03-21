@@ -7,6 +7,7 @@ class Mesh {
 		this.hasTexcoords = false;
 		let extraAttribs = [];
 
+		// 是否有需要传递给 GPU的相关顶点，法线，纹理数据。
 		if (verticesAttrib != null) {
 			this.hasVertices = true;
 			this.vertices = verticesAttrib.array;
@@ -70,6 +71,8 @@ class Mesh {
 			16, 17, 18, 16, 18, 19,   // right
 			20, 21, 22, 20, 22, 23,   // left
 		];
+
+		// 实例化 Mesh对象并返回，对于这个方法完全是为了构造一个正方体光源
 		return new Mesh({ name: 'aVertexPosition', array: new Float32Array(positions) }, null, null, indices);
 	}
 }

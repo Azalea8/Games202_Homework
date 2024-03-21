@@ -1,8 +1,12 @@
 class Material {
+    // 在 shader里面需要传入的值的名字
     #flatten_uniforms;
     #flatten_attribs;
+
+    // shader的代码
     #vsSrc;
     #fsSrc;
+
     // Uniforms is a map, attribs is a Array
     constructor(uniforms, attribs, vsSrc, fsSrc) {
         this.uniforms = uniforms;
@@ -11,6 +15,7 @@ class Material {
         this.#fsSrc = fsSrc;
         
         this.#flatten_uniforms = ['uModelViewMatrix', 'uProjectionMatrix', 'uCameraPos', 'uLightPos'];
+        // 多层嵌套解开，传入 #flatten_uniforms
         for (let k in uniforms) {
             this.#flatten_uniforms.push(k);
         }

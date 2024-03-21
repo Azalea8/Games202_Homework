@@ -2,9 +2,12 @@ class Shader {
 
     constructor(gl, vsSrc, fsSrc, shaderLocations) {
         this.gl = gl;
+
+        // vs, fs编译完成
         const vs = this.compileShader(vsSrc, gl.VERTEX_SHADER);
         const fs = this.compileShader(fsSrc, gl.FRAGMENT_SHADER);
 
+        // 链接 shader，之后加载需要传值的相关变量的地址
         this.program = this.addShaderLocations({
             glShaderProgram: this.linkShader(vs, fs),
         }, shaderLocations);
@@ -39,9 +42,12 @@ class Shader {
 
     addShaderLocations(result, shaderLocations) {
         const gl = this.gl;
+
+        // 在 {glShaderProgram: this.linkShader(vs, fs), }中新添加 uniforms，attribs键值对，记录变量名到地址间的映射
         result.uniforms = {};
         result.attribs = {};
 
+        // 建立映射中
         if (shaderLocations && shaderLocations.uniforms && shaderLocations.uniforms.length) {
             for (let i = 0; i < shaderLocations.uniforms.length; ++i) {
                 result.uniforms = Object.assign(result.uniforms, {
@@ -57,7 +63,8 @@ class Shader {
                 });
             }
         }
-        
+
+        // 返回这个对象记作 program
         return result;
     }
 }
