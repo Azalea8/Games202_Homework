@@ -38,8 +38,8 @@ function loadOBJ(renderer, path, name) {
 						// 检查子元素是否为网格。
 						if (child.isMesh) {
 							// 这里模型有两个 Mesh
-							// 一次对应模型主体；
-							// 一次为裙摆的 '202' 字体
+							// 一个对应模型主体；
+							// 一个为裙摆的 '202' 字体
 
 							// 获取子网格的几何体（geometry）
 							let geo = child.geometry;
