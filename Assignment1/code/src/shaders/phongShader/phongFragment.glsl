@@ -88,8 +88,8 @@ float findBlocker( sampler2D shadowMap,  vec2 uv, float zReceiver ) {
   float totalDepth=0.0;
   int blockCount =0;
 
-  for(int i=0;i<NUM_SAMPLES; i ++){
-    vec2 simpleUV = uv +poissonDisk[i]/float(2048) *50.0;
+  for(int i=0;i < NUM_SAMPLES;i ++){
+    vec2 simpleUV = uv + poissonDisk[i] / float(2048) * 10.0;
     float shadowMapDepth = unpack(vec4(texture2D(uShadowMap,simpleUV).rgb,1.0));
     if(zReceiver > (shadowMapDepth + EPS)){
       totalDepth += shadowMapDepth;
@@ -104,31 +104,31 @@ float findBlocker( sampler2D shadowMap,  vec2 uv, float zReceiver ) {
   }
 
   //完全遮挡
-  if(blockCount==NUM_SAMPLES){
+  if(blockCount == NUM_SAMPLES){
     return 2.0;
   }
 
-  return totalDepth/float( blockCount );
+  return totalDepth / float( blockCount );
 }
 
 float PCF(sampler2D shadowMap, vec4 coords, float filterSize) {
   float  visibility =0.0;
   float  currentDepth =coords.z;
   poissonDiskSamples(coords.xy);
-  for(int i=0;i<NUM_SAMPLES;i++){
-    vec2  texcoords =poissonDisk[i] * filterSize / float(2048) +coords.xy;
-    float  closesDepth =unpack(vec4(texture2D(shadowMap,texcoords).xyz,1.0));
+  for(int i = 0;i < NUM_SAMPLES;i++){
+    vec2  texcoords = poissonDisk[i] * filterSize / float(2048) + coords.xy;
+    float  closesDepth = unpack(vec4(texture2D(shadowMap,texcoords).xyz, 1.0));
     visibility += closesDepth  < currentDepth - EPS ? 0.0 : 1.0;
   }
 
-  return visibility/float(NUM_SAMPLES);
+  return visibility / float(NUM_SAMPLES);
 }
 
 float PCSS(sampler2D shadowMap, vec4 coords){
 
   // STEP 1: avgblocker depth 平均遮挡深度
-  float zBlocker = findBlocker(shadowMap,coords.xy,coords.z);
-  if(zBlocker<EPS){//没有被遮挡
+  float zBlocker = findBlocker(shadowMap, coords.xy, coords.z);
+  if(zBlocker < EPS){//没有被遮挡
     return 1.0;
   }
 
@@ -137,7 +137,7 @@ float PCSS(sampler2D shadowMap, vec4 coords){
   }
 
   // STEP 2: penumbra size 确定半影的大小
-  float penumbraScale =(coords.z -zBlocker) * 10.0 /zBlocker;
+  float penumbraScale =(coords.z - zBlocker) * 10.0 / zBlocker;
 
 
   // STEP 3: filtering  过滤
@@ -148,7 +148,7 @@ float PCSS(sampler2D shadowMap, vec4 coords){
 float useShadowMap(sampler2D shadowMap, vec4 shadowCoord){
   vec4 depthpack = texture2D(shadowMap,shadowCoord.xy);
   float depthUnpack = unpack(depthpack);
-  // 检查当前片段是否在阴影中
+  // 返回可见度
   if(depthUnpack > shadowCoord.z - EPS)
     return 1.0;
   return 0.0;
